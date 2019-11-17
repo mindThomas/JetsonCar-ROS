@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+
+	<!-- Launch file for Keyboard control -->
+  	<env name="ROSCONSOLE_CONFIG_FILE" value="$(find jetsoncar_driver)/config/rosconsole.conf"/>
+
+	<node pkg="jetsoncar_driver" type="teleop.py" name="teleop"  output="screen">
+		<remap from="cmd_vel" to="cmd_vel"/>  <!-- set to "cmd_vel" for control in body/heading frame or "cmd_vel_inertial" for control in inertial frame -->
+    		<param name="scale_linear" type="double" value="1.0" />
+    		<param name="scale_angular" type="double" value="1.0" />
+	</node>-->
+
+</launch>

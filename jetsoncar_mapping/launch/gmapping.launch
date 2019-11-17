@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- When finished mapping, save the map by calling: "rosrun map_server map_saver -f /tmp/my_map" -->
+
+<launch>
+
+	<arg name="odom_frame_id" default="odom"/>
+	<arg name="base_frame_id" default="footprint"/>
+	<arg name="global_frame_id" default="map"/>
+	<arg name="odom_topic" default="/odom" />
+	<arg name="laser_topic" default="/laser/scan" />
+	<arg name="initial_pose_x" default="0.0"/>
+	<arg name="initial_pose_y" default="0.0"/>
+	<arg name="initial_pose_a" default="0.0"/>
+
+	<node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+		<param name="base_frame" value="$(arg base_frame_id)"/>
+		<param name="odom_frame" value="$(arg odom_frame_id)"/>
+		<param name="map_update_interval" value="5.0"/>
+		<param name="maxUrange" value="5.0"/> <!-- This value dictates the mapping range from the sensor (usefull range) -->
+		<param name="maxRange" value="6.0"/> <!-- This value should match maximum sensor range -->
+		<param name="sigma" value="0.01"/>
+		<param name="kernelSize" value="1"/>
+		<param name="lstep" value="0.05"/>
+		<param name="astep" value="0.05"/>
+		<param name="iterations" value="5"/>
+		<param name="lsigma" value="0.075"/>
+		<param name="ogain" value="3.0"/>
+		<param name="lskip" value="0"/>
+		<param name="minimumScore" value="30"/> <!-- Increase this if you experience jumping estimates. Otherwise, lower this if you experience "Scan Matching failed" -->
+		<param name="srr" value="0.01"/>
+		<param name="srt" value="0.02"/>
+		<param name="str" value="0.01"/>
+		<param name="stt" value="0.02"/>
+		<param name="linearUpdate" value="0.1"/> <!-- Defines the minimum translational distance to move before a new scan is added -->
+		<param name="angularUpdate" value="0.1"/> <!-- Defines the minimum angle to rotate before a new scan is added -->
+		<param name="temporalUpdate" value="5"/>
+		<param name="resampleThreshold" value="0.5"/>
+		<param name="particles" value="100"/>
+		<!--
+		<param name="xmin" value="-50.0"/>
+		<param name="ymin" value="-50.0"/>
+		<param name="xmax" value="50.0"/>
+		<param name="ymax" value="50.0"/>
+		-->
+		<!-- The starting size is made small to reduce the initial memory footprint (required memory) -->
+		<param name="xmin" value="-1.0"/>
+		<param name="ymin" value="-1.0"/>
+		<param name="xmax" value="1.0"/>
+		<param name="ymax" value="1.0"/>
+
+		<param name="delta" value="0.05"/>
+		<param name="llsamplerange" value="0.01"/>
+		<param name="llsamplestep" value="0.01"/>
+		<param name="lasamplerange" value="0.005"/>
+		<param name="lasamplestep" value="0.005"/>
+		<remap from="scan" to="$(arg laser_topic)"/>
+	</node>
+
+</launch>

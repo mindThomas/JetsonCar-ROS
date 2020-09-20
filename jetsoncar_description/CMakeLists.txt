@@ -1,41 +1,78 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(jetsoncar_driver)
+project(jetsoncar_description)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++11)
+# add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  std_msgs
-  geometry_msgs
-  sensor_msgs
-  nav_msgs
-  ackermann_msgs
-  tf
-  tf2
-  tf2_ros
-  dynamic_reconfigure
-  jetsoncar_msgs
-  jetsoncar_srvs
-)
+find_package(catkin REQUIRED)
 
 ## System dependencies are found with CMake's conventions
-## Find Boost
-find_package(Boost REQUIRED COMPONENTS thread)
-include_directories(${Boost_INCLUDE_DIRS})
+# find_package(Boost REQUIRED COMPONENTS system)
+
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-catkin_python_setup()
+# catkin_python_setup()
+
+################################################
+## Declare ROS messages, services and actions ##
+################################################
+
+## To declare and build messages, services or actions from within this
+## package, follow these steps:
+## * Let MSG_DEP_SET be the set of packages whose message types you use in
+##   your messages/services/actions (e.g. std_msgs, actionlib_msgs, ...).
+## * In the file package.xml:
+##   * add a build_depend tag for "message_generation"
+##   * add a build_depend and a exec_depend tag for each package in MSG_DEP_SET
+##   * If MSG_DEP_SET isn't empty the following dependency has been pulled in
+##     but can be declared for certainty nonetheless:
+##     * add a exec_depend tag for "message_runtime"
+## * In this file (CMakeLists.txt):
+##   * add "message_generation" and every package in MSG_DEP_SET to
+##     find_package(catkin REQUIRED COMPONENTS ...)
+##   * add "message_runtime" and every package in MSG_DEP_SET to
+##     catkin_package(CATKIN_DEPENDS ...)
+##   * uncomment the add_*_files sections below as needed
+##     and list every .msg/.srv/.action file to be processed
+##   * uncomment the generate_messages entry below
+##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
+
+## Generate messages in the 'msg' folder
+# add_message_files(
+#   FILES
+#   Message1.msg
+#   Message2.msg
+# )
+
+## Generate services in the 'srv' folder
+# add_service_files(
+#   FILES
+#   Service1.srv
+#   Service2.srv
+# )
+
+## Generate actions in the 'action' folder
+# add_action_files(
+#   FILES
+#   Action1.action
+#   Action2.action
+# )
+
+## Generate added messages and services with any dependencies listed here
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs  # Or other packages containing msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
 ################################################
-	
+
 ## To declare and build dynamic reconfigure parameters within this
 ## package, follow these steps:
 ## * In the file package.xml:
@@ -52,15 +89,6 @@ catkin_python_setup()
 #   cfg/DynReconf2.cfg
 # )
 
-generate_dynamic_reconfigure_options(
-  cfg/TestParameters.cfg  
-  cfg/Parameters.cfg
-)
-
-# Add LSPC library
-add_subdirectory(libs/lspc)
-add_subdirectory(libs/utils)
-
 ###################################
 ## catkin specific configuration ##
 ###################################
@@ -71,10 +99,10 @@ add_subdirectory(libs/utils)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES lspc
-  CATKIN_DEPENDS roscpp std_msgs geometry_msgs sensor_msgs nav_msgs ackermann_msgs tf dynamic_reconfigure jetsoncar_msgs jetsoncar_srvs
-  DEPENDS Boost
+#  INCLUDE_DIRS include
+#  LIBRARIES kugle_description
+#  CATKIN_DEPENDS other_catkin_pkg
+#  DEPENDS system_lib
 )
 
 ###########
@@ -84,13 +112,13 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-  include
-  ${catkin_INCLUDE_DIRS}
+# include
+# ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/kugle_communication.cpp
+#   src/${PROJECT_NAME}/kugle_description.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -101,7 +129,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/kugle_communication_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/kugle_description_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -118,18 +146,6 @@ include_directories(
 #   ${catkin_LIBRARIES}
 # )
 
-add_executable (test_node src/test_node.cpp)
-add_dependencies(test_node ${PROJECT_NAME}_gencfg ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(test_node ${catkin_LIBRARIES})
-
-add_executable (odometry_node src/odometry_node.cpp)
-add_dependencies(odometry_node ${catkin_EXPORTED_TARGETS})
-target_link_libraries(odometry_node ${catkin_LIBRARIES})
-
-add_executable (jetsoncar_driver_node src/jetsoncar_driver_node/main.cpp src/jetsoncar_driver_node/lspc_callbacks.cpp src/jetsoncar_driver_node/ros_callbacks.cpp src/odometry.cpp)
-add_dependencies(jetsoncar_driver_node ${PROJECT_NAME}_gencfg ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(jetsoncar_driver_node ${catkin_LIBRARIES} lspc utils)
-
 #############
 ## Install ##
 #############
@@ -139,11 +155,10 @@ target_link_libraries(jetsoncar_driver_node ${catkin_LIBRARIES} lspc utils)
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-install(PROGRAMS
-   scripts/teleop.py
-   scripts/keyboard_teleop.py
-   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+# install(PROGRAMS
+#   scripts/my_python_script
+#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
 
 ## Mark executables and/or libraries for installation
 # install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_node
@@ -167,13 +182,7 @@ install(PROGRAMS
 # )
 
 install(
-    TARGETS test_node odometry_node jetsoncar_driver_node
-    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-)
-
-install(
-    DIRECTORY cfg config launch
+    DIRECTORY models rviz urdf
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
@@ -182,7 +191,7 @@ install(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_kugle_communication.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_kugle_description.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

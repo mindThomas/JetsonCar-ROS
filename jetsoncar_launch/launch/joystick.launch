@@ -2,7 +2,7 @@
 <launch>
 
 	<!-- Launch file for Joystick control -->
-  	<env name="ROSCONSOLE_CONFIG_FILE" value="$(find kugle_driver)/config/rosconsole.conf"/>
+  	<env name="ROSCONSOLE_CONFIG_FILE" value="$(find jetsoncar_driver)/config/rosconsole.conf"/>
 
 	<!-- Remember to install "sudo pip install ds4drv" -->
 	<!-- Start "sudo ds4drv" in seperate terminal -->  	

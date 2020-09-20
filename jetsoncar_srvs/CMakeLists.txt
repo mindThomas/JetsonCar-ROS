@@ -9,6 +9,9 @@ add_service_files(
   DIRECTORY srv
   FILES
   AddTwoInts.srv  
+  Reboot.srv
+  EnterBootloader.srv
+  SetPID.srv
 )
 
 #add_action_files(

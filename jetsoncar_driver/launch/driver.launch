@@ -1,14 +1,23 @@
 <?xml version="1.0"?>
 <launch>
 
-  	<env name="ROSCONSOLE_CONFIG_FILE" value="$(find jetsoncar_driver)/config/rosconsole.conf"/>
+    <arg name="serial_port" default="/dev/jetsoncar" />
+    <arg name="open_reconfigure" default="true" />
 
-	<node name="test_node" pkg="kugle_driver" type="test_node" respawn="false" output="screen">
-		<param name="str_param" type="string" value="This string was loaded from the Launch file" />
-	</node>
+    <env name="ROSCONSOLE_CONFIG_FILE" value="$(find jetsoncar_driver)/config/rosconsole.conf"/>
 
-	<node name="reconfigure_gui" pkg="rqt_reconfigure" type="rqt_reconfigure" />
+    <!-- urdf xml robot description loaded on the Parameter Server (for use in RViz) - this also converts the xacro into a proper urdf file -->
+    <param name="robot_description" command="$(find xacro)/xacro '$(find jetsoncar_description)/urdf/jetsoncar.xacro'" />
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
 
-	<node name="service_gui" pkg="rqt_service_caller" type="rqt_service_caller" />
+    <node name="jetsoncar_driver" pkg="jetsoncar_driver" type="jetsoncar_driver_node" respawn="true" output="screen">
+        <param name="serial_port" type="string" value="$(arg serial_port)" />
+    </node>
+
+    <group if="$(arg open_reconfigure)">
+        <node name="reconfigure_gui" pkg="rqt_reconfigure" type="rqt_reconfigure" required="false" args="jetsoncar_driver" />
+    </group>
+
+	<!--<node name="service_gui" pkg="rqt_service_caller" type="rqt_service_caller" />-->
 
 </launch>

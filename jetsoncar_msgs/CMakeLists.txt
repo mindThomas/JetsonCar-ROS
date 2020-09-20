@@ -10,6 +10,7 @@ add_message_files(
   FILES
   Test.msg
   Encoders.msg
+  Setpoint.msg
 )
 
 generate_messages(DEPENDENCIES geometry_msgs std_msgs actionlib_msgs)

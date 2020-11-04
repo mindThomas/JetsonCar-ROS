@@ -13,10 +13,10 @@
      and https://github.com/mit-racecar/racecar-simulator/blob/master/racecar_description/urdf/racecar.xacro
 -->
 
-	<xacro:include filename="$(find jetsoncar_sim_description)/urdf/parameters.xacro" />	
-	<xacro:include filename="$(find jetsoncar_sim_description)/urdf/physical.xacro" />
-	<xacro:include filename="$(find jetsoncar_sim_description)/urdf/joints.xacro" />	
-	<xacro:include filename="$(find jetsoncar_sim_description)/urdf/materials.xacro" />
+	<xacro:include filename="$(find jetsoncar_description)/urdf/parameters.xacro" />	
+	<xacro:include filename="$(find jetsoncar_description)/urdf/physical.xacro" />
+	<xacro:include filename="$(find jetsoncar_description)/urdf/joints.xacro" />	
+	<xacro:include filename="$(find jetsoncar_description)/urdf/materials.xacro" />
 	
 	<link name="footprint"/>
 

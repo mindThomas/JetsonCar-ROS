@@ -3,7 +3,7 @@
 # And enable the service on boot by running: 
 #   sudo systemctl daemon-reload
 #   sudo systemctl enable jetsoncar.service
-# Make sure this file has correct permissions: chmod u+x auto.sh
+# Make sure this file has correct permissions: chmod u+x startup_launch.sh
 
 bash -c "source /opt/ros/melodic/setup.bash && source /home/jetson/ros_ws/devel/setup.bash && source /home/jetson/PrepareHostROS.sh && roslaunch jetsoncar_bringup minimal.launch > /home/jetson/startup_launch.log &"
 

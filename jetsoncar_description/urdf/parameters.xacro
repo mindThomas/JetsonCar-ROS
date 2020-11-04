@@ -3,13 +3,13 @@
 
 	<!-- X axis direction is forward, Y axis direction is left -->
 
-    <!-- Sensors related properties -->
-    <xacro:property name="enable_lidar" value="true" />
-    <xacro:property name="enable_realsense" value="false" />
-    <xacro:property name="enable_range_sensors" value="false" />
-    <xacro:property name="enable_dual_camera" value="true" />
-    <xacro:property name="enable_front_camera" value="false" />
-    <xacro:property name="enable_imu" value="true" />
+	<!-- Sensors related properties -->
+	<xacro:property name="enable_lidar" value="true" />
+	<xacro:property name="enable_realsense" value="false" />
+	<xacro:property name="enable_range_sensors" value="false" />
+	<xacro:property name="enable_dual_camera" value="true" />
+	<xacro:property name="enable_front_camera" value="false" />
+	<xacro:property name="enable_imu" value="true" />
 
 	<!-- IMU related properties -->
 	<xacro:property name="imu_width" value="0.05" />
@@ -67,5 +67,8 @@
 	<xacro:property name="ranger_length" value="0.01" />
 	<xacro:property name="ranger_height" value="0.02" />
 	<xacro:property name="ranger_weight" value="0.050" />
+
+	<!-- Steering related properties -->
+	<xacro:property name="steering_wheel_angle_limit" value="${40/180*pi}" />
 
 </robot>

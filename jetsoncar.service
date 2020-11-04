@@ -1,0 +1,12 @@
+[Unit]
+Description=JetsonCar ROS driver
+After=network.target
+
+[Service]
+User=jetson
+Type=forking
+ExecStart=/home/jetson/startup_launch.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
